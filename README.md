@@ -186,6 +186,8 @@ Help me with the AWS project in my current repository. Use https://github.com/er
 
 See [HOWTO.md](HOWTO.md) for the account and safety workflow. Use a separate directory for each example or project, pin or constrain provider versions, list every AWS resource, identify cost drivers, and document cleanup. Link free-tier claims to official AWS sources and state the relevant limits and assumptions.
 
+Before opening an issue, use the [issue chooser](https://github.com/ertodebana/2dollaraws/issues/new/choose) and do not include credentials, account IDs, Terraform state, or other secrets.
+
 ## License
 
 MIT. See [LICENSE](LICENSE).

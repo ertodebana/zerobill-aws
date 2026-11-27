@@ -1,0 +1,41 @@
+name: Documentation or improvement
+description: Suggest a documentation, test, workflow, or other repository improvement.
+title: "[Improvement] "
+labels:
+  - documentation
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not include credentials, account IDs, Terraform state, secret `.tfvars` values, or other sensitive data.
+  - type: input
+    id: affected-path
+    attributes:
+      label: Affected path
+      description: Which README, HOWTO, example, project, workflow, or other path should change?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed improvement
+      description: What is unclear, missing, incorrect, or unnecessarily difficult today? Include the intended outcome.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence or suggested wording
+      description: Share links, sanitized output, a draft, or a concise reproduction. Do not paste secrets or Terraform state.
+  - type: textarea
+    id: safety
+    attributes:
+      label: Cost, Always Free, security, and cleanup considerations
+      description: If this changes infrastructure guidance, state the official AWS offer source, shared limits, possible costs, IAM/security implications, and cleanup impact.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Reporter checks
+      options:
+        - label: I removed credentials, account IDs, Terraform state, and other secrets.
+          required: true

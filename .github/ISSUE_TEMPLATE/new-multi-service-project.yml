@@ -1,0 +1,55 @@
+name: New multi-service project
+description: Suggest a project that combines multiple AWS services.
+title: "[Project] "
+labels:
+  - enhancement
+  - project
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe a coherent, teachable project. Do not include credentials, account IDs, Terraform state, secret `.tfvars` values, or other sensitive data.
+  - type: input
+    id: project-name
+    attributes:
+      label: Project name
+      description: What should the project be called?
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Project goal and workflow
+      description: What does the project do, and how do the services work together?
+    validations:
+      required: true
+  - type: textarea
+    id: services
+    attributes:
+      label: AWS services and affected paths
+      description: List every proposed AWS service and the example/project directory or files it would add or change.
+    validations:
+      required: true
+  - type: textarea
+    id: offers
+    attributes:
+      label: Official offers and shared limits
+      description: Link official AWS offer sources for each service, including Region/account conditions and shared quotas or usage limits across the workflow.
+    validations:
+      required: true
+  - type: textarea
+    id: safety
+    attributes:
+      label: Cost, IAM/security, and cleanup plan
+      description: Explain possible charges, data transfer/log costs, IAM boundaries and security concerns, retention, and how a reader can remove every resource safely.
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Proposal checks
+      options:
+        - label: I removed credentials, account IDs, Terraform state, and other secrets.
+          required: true
+        - label: I linked official AWS sources and considered shared usage limits.
+          required: true

@@ -1,0 +1,55 @@
+name: New service example
+description: Suggest a single-service Terraform example.
+title: "[Example] "
+labels:
+  - enhancement
+  - example
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Proposals should be safe for learners and target an AWS Always Free offer where possible. Do not include credentials, account IDs, Terraform state, secret `.tfvars` values, or other sensitive data.
+  - type: input
+    id: service
+    attributes:
+      label: AWS service
+      description: Which one primary AWS service should the example teach?
+    validations:
+      required: true
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use case and learning goal
+      description: What should a reader learn, and what is the smallest useful example?
+    validations:
+      required: true
+  - type: textarea
+    id: offer-source
+    attributes:
+      label: Official offer source and limits
+      description: Link the official AWS pricing or Free Tier page and state the offer, Region/account conditions, and shared usage limits that matter.
+    validations:
+      required: true
+  - type: textarea
+    id: resources
+    attributes:
+      label: Proposed resources and Terraform shape
+      description: List resources, inputs/outputs, provider constraints, and any files or affected paths.
+    validations:
+      required: true
+  - type: textarea
+    id: safety
+    attributes:
+      label: Cost, IAM/security, and cleanup
+      description: Identify possible costs outside the offer, least-privilege/IAM concerns, security defaults, and exact cleanup steps.
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Proposal checks
+      options:
+        - label: I removed credentials, account IDs, Terraform state, and other secrets.
+          required: true
+        - label: I linked an official AWS source for the offer and limits.
+          required: true

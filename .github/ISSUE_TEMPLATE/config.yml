@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: AWS Free Tier and Always Free offers
+    url: https://aws.amazon.com/free/
+    about: Check current service offers, limits, Regions, and account eligibility before deploying.

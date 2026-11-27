@@ -7,3 +7,5 @@
 crash.log
 crash.*.log
 services.md
+.claude/
+CLAUDE.md

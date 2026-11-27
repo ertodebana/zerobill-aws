@@ -1,0 +1,52 @@
+name: Bug or fix
+description: Report a reproducible problem or propose a focused correction.
+title: "[Bug] "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve 2dollaraws. Please do not deploy resources just to reproduce a report. Never include credentials, account IDs, Terraform state, secret `.tfvars` values, or other sensitive data.
+  - type: input
+    id: affected-path
+    attributes:
+      label: Affected path
+      description: Which example, project, file, or documentation path is affected?
+      placeholder: examples/lambda-hello/
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: Problem summary
+      description: What happened, and what did you expect to happen instead?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction details
+      description: Provide safe commands, relevant Terraform/provider versions, Region, and sanitized diagnostics. Remove credentials, account IDs, state contents, and secret values.
+      placeholder: |
+        terraform version:
+        AWS provider version:
+        Region:
+        Safe steps or command:
+        Sanitized output:
+    validations:
+      required: true
+  - type: textarea
+    id: safety
+    attributes:
+      label: Cost, security, and cleanup impact
+      description: Could this affect Always Free limits, create unexpected costs, weaken IAM/security, or leave resources behind? Include a safe cleanup approach if known.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Reporter checks
+      options:
+        - label: I removed credentials, account IDs, Terraform state, and other secrets.
+          required: true
+        - label: I did not deploy resources solely to reproduce this issue.
+          required: true
