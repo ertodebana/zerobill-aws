@@ -1,14 +1,14 @@
-<h1 align="center">AWS Free Services, Used Well</h1>
+<h1 align="center">zerobill-aws</h1>
 
 <p align="center">
-  A practical reference for AWS Always Free patterns, Terraform examples, and cost-aware project help.
+  AWS Always Free patterns and Terraform examples that keep your bill at $0.
 </p>
 
 <p align="center">
   <a href="https://aws.amazon.com/free/"><img alt="AWS Always Free" src="https://img.shields.io/badge/AWS-Always%20Free-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white"></a>
   <a href="https://developer.hashicorp.com/terraform"><img alt="Terraform" src="https://img.shields.io/badge/Terraform-IaC-7B42BC?style=for-the-badge&logo=terraform&logoColor=white"></a>
   <a href="LICENSE"><img alt="MIT License" src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge"></a>
-  <a href="https://github.com/ertodebana/2dollaraws"><img alt="Examples" src="https://img.shields.io/badge/Examples-17-2F855A?style=for-the-badge&logo=github&logoColor=white"></a>
+  <a href="https://github.com/ertodebana/zerobill-aws"><img alt="Examples" src="https://img.shields.io/badge/Examples-17-2F855A?style=for-the-badge&logo=github&logoColor=white"></a>
   <a href="#multi-service-projects"><img alt="Projects" src="https://img.shields.io/badge/Projects-8-805AD5?style=for-the-badge"></a>
 </p>
 
@@ -179,14 +179,14 @@ These projects combine services into complete learning paths. Each has an indepe
 Use this prompt while working in your existing project. It points the agent to this repository as a reference.
 
 ```text
-Help me with the AWS project in my current repository. Use https://github.com/ertodebana/2dollaraws as a reference for Always Free services, Terraform patterns, cost limits, and cleanup guidance. Inspect my project and apply the relevant help to the task I give you.
+Help me with the AWS project in my current repository. Use https://github.com/ertodebana/zerobill-aws as a reference for Always Free services, Terraform patterns, cost limits, and cleanup guidance. Inspect my project and apply the relevant help to the task I give you.
 ```
 
 ## Contributing
 
 See [HOWTO.md](HOWTO.md) for the account and safety workflow. Use a separate directory for each example or project, pin or constrain provider versions, list every AWS resource, identify cost drivers, and document cleanup. Link free-tier claims to official AWS sources and state the relevant limits and assumptions.
 
-Before opening an issue, use the [issue chooser](https://github.com/ertodebana/2dollaraws/issues/new/choose) and do not include credentials, account IDs, Terraform state, or other secrets.
+Before opening an issue, use the [issue chooser](https://github.com/ertodebana/zerobill-aws/issues/new/choose) and do not include credentials, account IDs, Terraform state, or other secrets.
 
 ## License
 

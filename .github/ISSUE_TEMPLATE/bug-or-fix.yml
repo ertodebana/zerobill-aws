@@ -7,7 +7,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for helping improve 2dollaraws. Please do not deploy resources just to reproduce a report. Never include credentials, account IDs, Terraform state, secret `.tfvars` values, or other sensitive data.
+        Thanks for helping improve zerobill. Please do not deploy resources just to reproduce a report. Never include credentials, account IDs, Terraform state, secret `.tfvars` values, or other sensitive data.
   - type: input
     id: affected-path
     attributes:

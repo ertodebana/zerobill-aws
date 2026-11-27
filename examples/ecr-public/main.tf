@@ -25,7 +25,7 @@ resource "aws_ecrpublic_repository" "this" {
   force_destroy   = true
 
   catalog_data {
-    description       = "2dollaraws ECR Public learning example (tiny busybox image)"
+    description       = "zerobill ECR Public learning example (tiny busybox image)"
     about_text        = "Learning example. Safe to ignore."
     operating_systems = ["Linux"]
     architectures     = ["x86-64", "ARM 64"]

@@ -27,7 +27,7 @@ resource "aws_ecrpublic_repository" "this" {
   force_destroy   = true
 
   catalog_data {
-    description       = "2dollaraws CI image build learning project"
+    description       = "zerobill CI image build learning project"
     about_text        = "Learning example. Safe to ignore."
     operating_systems = ["Linux"]
     architectures     = ["x86-64"]

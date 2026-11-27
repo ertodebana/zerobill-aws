@@ -15,7 +15,7 @@ provider "aws" {
 # name_prefix, not name: a deprecated domain name can never be reused.
 resource "aws_swf_domain" "this" {
   name_prefix                                 = var.domain_name_prefix
-  description                                 = "2dollaraws SWF learning domain"
+  description                                 = "zerobill SWF learning domain"
   workflow_execution_retention_period_in_days = tostring(var.retention_days)
 
   tags = {

@@ -21,7 +21,7 @@ def check(url):
     status, error = 0, None
     try:
         req = urllib.request.Request(
-            url, method="GET", headers={"User-Agent": "2dollaraws-uptime-monitor"}
+            url, method="GET", headers={"User-Agent": "zerobill-uptime-monitor"}
         )
         with urllib.request.urlopen(req, timeout=5) as resp:
             status = resp.status

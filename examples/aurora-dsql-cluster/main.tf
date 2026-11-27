@@ -26,6 +26,6 @@ resource "aws_dsql_cluster" "this" {
 
   tags = {
     Name    = var.cluster_name
-    Project = "2dollaraws"
+    Project = "zerobill"
   }
 }

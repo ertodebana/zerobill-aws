@@ -24,7 +24,7 @@ resource "aws_prometheus_workspace" "demo" {
 
   # AWS-owned encryption key (no kms_key_arn) and no vended logging, to avoid extra charges.
   tags = {
-    Project = "2dollaraws"
+    Project = "zerobill"
   }
 }
 

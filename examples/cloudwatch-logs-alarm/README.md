@@ -4,7 +4,7 @@ Shows the core CloudWatch loop with no compute: you write log lines from the CLI
 
 Resources created:
 
-1. `aws_cloudwatch_log_group.demo`: `/2dollaraws/cloudwatch-demo`, STANDARD class, 1-day retention, no KMS key.
+1. `aws_cloudwatch_log_group.demo`: `/zerobill/cloudwatch-demo`, STANDARD class, 1-day retention, no KMS key.
 2. `aws_cloudwatch_log_stream.demo`: stream `manual`, so you can call `put-log-events` directly.
 3. `aws_cloudwatch_log_metric_filter.errors`: pattern `"ERROR"` to metric `TwoDollarAws/CloudWatchDemo` / `ErrorCount`, no dimensions.
 4. `aws_cloudwatch_metric_alarm.errors`: `cloudwatch-demo-errors`, standard resolution, Sum over 300 s >= 1, no actions.
@@ -61,8 +61,8 @@ Least-privilege operator policy (replace `REGION` and `ACCOUNT_ID`; names assume
         "logs:TagResource"
       ],
       "Resource": [
-        "arn:aws:logs:REGION:ACCOUNT_ID:log-group:/2dollaraws/cloudwatch-demo",
-        "arn:aws:logs:REGION:ACCOUNT_ID:log-group:/2dollaraws/cloudwatch-demo:*"
+        "arn:aws:logs:REGION:ACCOUNT_ID:log-group:/zerobill/cloudwatch-demo",
+        "arn:aws:logs:REGION:ACCOUNT_ID:log-group:/zerobill/cloudwatch-demo:*"
       ]
     },
     {
@@ -151,7 +151,7 @@ terraform destroy
 Verify nothing is left:
 
 ```sh
-aws logs describe-log-groups --log-group-name-prefix /2dollaraws/
+aws logs describe-log-groups --log-group-name-prefix /zerobill/
 aws cloudwatch describe-alarms --alarm-name-prefix cloudwatch-demo
 aws cloudwatch list-dashboards --dashboard-name-prefix cloudwatch-demo
 ```
