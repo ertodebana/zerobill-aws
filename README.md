@@ -1,90 +1,210 @@
-# AWS Free Services, Used Well
+<h1 align="center">AWS Free Services, Used Well</h1>
 
-> A practical, community-maintained collection of small Terraform examples for AWS services with **Always Free** usage offers.
+<p align="center">
+  Learn AWS building blocks with small Terraform examples, then combine them into complete projects.
+</p>
 
-[![Terraform](https://img.shields.io/badge/IaC-Terraform-7B42BC?logo=terraform)](https://developer.hashicorp.com/terraform)
-[![AWS](https://img.shields.io/badge/Cloud-AWS-232F3E?logo=amazonaws)](https://aws.amazon.com/free/)
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+<p align="center">
+  <a href="https://aws.amazon.com/free/"><img alt="AWS Always Free" src="https://img.shields.io/badge/AWS-Always%20Free-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white"></a>
+  <a href="https://developer.hashicorp.com/terraform"><img alt="Terraform" src="https://img.shields.io/badge/Terraform-IaC-7B42BC?style=for-the-badge&logo=terraform&logoColor=white"></a>
+  <a href="LICENSE"><img alt="MIT License" src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge"></a>
+  <a href="https://github.com/ertodebana/2dollaraws"><img alt="Examples" src="https://img.shields.io/badge/Examples-17-2F855A?style=for-the-badge&logo=github&logoColor=white"></a>
+  <a href="#multi-service-projects"><img alt="Projects" src="https://img.shields.io/badge/Projects-8-805AD5?style=for-the-badge"></a>
+</p>
 
-AWS free usage is useful for learning and small experiments, but it is not a promise that every deployment costs $0. Offers have monthly quotas, eligibility rules and exclusions. Check the live AWS offer and your account's billing console before deploying.
+<p align="center">
+  <a href="#start-here">Start here</a> ·
+  <a href="#service-examples">Examples</a> ·
+  <a href="#multi-service-projects">Projects</a> ·
+  <a href="#cost-safety">Cost safety</a> ·
+  <a href="#use-with-a-coding-agent">Coding agent</a>
+</p>
+
+> **Always Free means bounded, not unlimited.** AWS offers have quotas, account and Region rules, and exclusions. A Terraform plan cannot guarantee a $0 bill. Check the current offer and your billing console before creating resources.
 
 ## Start here
 
 1. Read [HOWTO.md](HOWTO.md) before creating an AWS account or configuring credentials.
-2. Set up root-user security, a non-root operator, billing alerts and the AWS CLI.
-3. Choose one example below, inspect its Terraform, and run `terraform plan` before applying.
-4. Destroy resources when finished and confirm in the console that they are gone.
+2. Pick a small [service example](#service-examples) or a [multi-service project](#multi-service-projects).
+3. Read that folder’s README, inspect its Terraform, and run `terraform plan` before applying.
+4. Clean up when you finish, then confirm the resources are gone in the AWS console.
 
-## Examples
+### The learning path
 
-| Example | What it demonstrates | Watch for |
+```mermaid
+flowchart LR
+    A[Choose an AWS service] --> B[Build a small example]
+    B --> C[Combine services in a project]
+    C --> D[Review quotas, costs, and the Terraform plan]
+```
+
+<p align="center">
+  <a href="examples/lambda-hello/"><img alt="Lambda" src="https://img.shields.io/badge/Compute-Lambda-FF9900?style=flat-square&logo=amazonaws&logoColor=white"></a>
+  <a href="examples/dynamodb-provisioned/"><img alt="DynamoDB" src="https://img.shields.io/badge/Database-DynamoDB-4053D6?style=flat-square&logo=amazonaws&logoColor=white"></a>
+  <a href="examples/sqs-queue-dlq/"><img alt="SQS" src="https://img.shields.io/badge/Messaging-SQS-8C4FFF?style=flat-square&logo=amazonaws&logoColor=white"></a>
+  <a href="examples/step-functions-hello/"><img alt="Step Functions" src="https://img.shields.io/badge/Workflow-Step%20Functions-FF4F8B?style=flat-square&logo=amazonaws&logoColor=white"></a>
+  <a href="examples/cloudwatch-logs-alarm/"><img alt="CloudWatch" src="https://img.shields.io/badge/Observability-CloudWatch-FF4F8B?style=flat-square&logo=amazonaws&logoColor=white"></a>
+  <a href="examples/cloudfront-lambda-url/"><img alt="CloudFront" src="https://img.shields.io/badge/Edge-CloudFront-8C4FFF?style=flat-square&logo=amazonaws&logoColor=white"></a>
+  <a href="examples/cognito-user-pool/"><img alt="Cognito" src="https://img.shields.io/badge/Identity-Cognito-DD344C?style=flat-square&logo=amazonaws&logoColor=white"></a>
+  <a href="examples/codebuild/"><img alt="CodeBuild" src="https://img.shields.io/badge/Build-CodeBuild-3178C6?style=flat-square&logo=amazonaws&logoColor=white"></a>
+</p>
+
+## Service examples
+
+Each example is an independent Terraform root with its own README, bounded settings, and cleanup instructions. Read the linked README for current limits and usage details.
+
+<details open>
+<summary><strong>Compute and container builds</strong></summary>
+
+| Example | Learn | Keep in mind |
 | --- | --- | --- |
-| [Aurora DSQL cluster](examples/aurora-dsql-cluster/) | A small single-Region Aurora DSQL cluster and IAM-authenticated PostgreSQL connection | Cluster hours and storage have limits; keep it single-Region and destroy it when finished. |
-| [CloudFront with a Lambda URL](examples/cloudfront-lambda-url/) | A CloudFront distribution in front of a Lambda function URL using origin access control | Requests, data transfer and function calls share account allowances. |
-| [CloudTrail event history](examples/cloudtrail-event-history/) | Inspect the free 90-day management event history without creating a trail | A trail adds S3 storage and request costs. |
-| [CloudWatch logs and alarm](examples/cloudwatch-logs-alarm/) | Send log lines, turn matching lines into a metric, and alarm on that metric | Metrics, alarms, dashboards, log ingestion and retention share account limits. |
-| [CodeBuild](examples/codebuild/) | A no-source build project with bounded compute and log retention | Build minutes are shared across projects; larger or GPU compute is paid. |
-| [Cognito user pool](examples/cognito-user-pool/) | A Lite-tier user pool and public client for learner sign-in | Keep the tier explicit; SMS and custom domains can add charges. |
-| [DynamoDB provisioned table](examples/dynamodb-provisioned/) | A small table with explicitly bounded provisioned capacity | Storage, backups, streams, replicas and excess requests can cost extra. |
-| [ECR Public](examples/ecr-public/) | Publish a small container image to a public repository | Public image pulls consume transfer allowances; repository contents are public. |
-| [EventBridge Scheduler](examples/eventbridge/) | A scheduled Lambda invocation with a least-privilege role | Keep schedules sparse and bound Lambda runtime and log retention. |
-| [Lambda hello](examples/lambda-hello/) | A minimal function with a bounded CloudWatch log retention period | Requests, duration, networking, log ingestion and retained logs have separate limits or charges. |
-| [Managed Prometheus](examples/managed-prometheus/) | A small scrape and query setup for Amazon Managed Service for Prometheus | Ingestion, storage and query dimensions have separate limits; avoid EKS or EC2 dependencies. |
-| [SNS fanout to SQS](examples/sns-fanout-sqs/) | Deliver one topic's messages to a queue, with an optional email subscription | Email must be confirmed; KMS keys and SMS are excluded. |
-| [SQS queue and DLQ](examples/sqs-queue-dlq/) | A standard queue with a dead-letter queue and redrive policy | Queue requests are shared; idle Lambda pollers can use requests too. |
-| [Systems Manager Parameter Store](examples/ssm-parameter-store/) | Standard String and SecureString parameters using the AWS-managed key | SecureString values remain in Terraform state; customer-managed keys cost extra. |
-| [Step Functions Standard](examples/step-functions-hello/) | A short workflow built from native states | Standard transitions are shared across the account; Express has no Always Free allowance. |
-| [Simple Workflow Service](examples/swf-domain/) | Create an SWF domain and register workflow types with the AWS CLI | SWF domains cannot be deleted; destroy only deprecates a domain permanently. |
-| [X-Ray Lambda tracing](examples/xray-lambda-tracing/) | Enable active tracing on a small Lambda function | Trace recording and retrieval have separate monthly limits. |
+| [Lambda hello](examples/lambda-hello/) | Deploy a small function with bounded log retention. | Requests, duration, networking, and logs have separate limits. |
+| [CodeBuild](examples/codebuild/) | Run a no-source build with bounded compute. | Build minutes are shared; larger and GPU compute is paid. |
+| [ECR Public](examples/ecr-public/) | Publish a small container image publicly. | Repository contents are public; image pulls use transfer allowances. |
 
-Examples are intentionally small and independent. They are starting points, not production architectures. Each folder contains its own README with prerequisites, resources, checks, and cleanup instructions.
+</details>
 
-## Projects
+<details>
+<summary><strong>Data and storage</strong></summary>
 
-These projects combine multiple services to show complete learning paths. Each project has its own Terraform root and README. Review shared account quotas before deploying more than one at a time.
-
-| Project | What it builds | Main watch-out |
+| Example | Learn | Keep in mind |
 | --- | --- | --- |
-| [Uptime monitor](projects/uptime-monitor/) | Scheduled URL checks, alerts, status history and a dashboard | CloudWatch metrics and alarms are account-wide limits. |
-| [Account cost guardrail](projects/account-cost-guardrail/) | Budget emails and an automatic lock on a dedicated sandbox role | Keep the Terraform operator outside the role the brake can lock. |
-| [Notes API with Cognito auth](projects/notes-api-auth/) | A per-user notes API that verifies Cognito tokens in Lambda | Public function URLs can receive unauthenticated traffic; JWT checks happen before database access. This project uses AWS provider 6.28+. |
-| [Order saga](projects/order-saga/) | Order intake, stock reservation, mock payment and compensation steps | Step Functions Standard transitions are shared across examples and projects. |
-| [Webhook ingestion queue](projects/webhook-ingest-queue/) | Signed webhook intake, SQS buffering, idempotent processing and a DLQ alert | The worker is off by default because idle SQS polling uses free requests. This project uses AWS provider 6.28+. |
-| [CI image build](projects/ci-image-build/) | CodeBuild builds a public container image and emails on failure | Build minutes are limited and shared; only build repositories you control. |
-| [Feature flags at the edge](projects/feature-flags-edge/) | CloudFront caches flags from a protected Lambda URL backed by DynamoDB | CloudFront Function invocations are the tightest request limit. This project uses AWS provider 6.28+. |
-| [Daily earthquake digest](projects/daily-digest/) | A daily USGS summary stored in DynamoDB and emailed through SNS | The daily cap protects the shared Step Functions transition allowance. |
+| [DynamoDB provisioned table](examples/dynamodb-provisioned/) | Set explicit read/write capacity on a small table. | Backups, streams, replicas, storage, and excess usage can cost extra. |
+| [Aurora DSQL cluster](examples/aurora-dsql-cluster/) | Connect to a single-Region cluster with IAM authentication. | Cluster hours and storage have limits; destroy it when finished. |
 
-## Guardrails
+</details>
 
-- This repository targets **Always Free offers only**. It does not depend on student or AWS Partner benefits, credits, or time-limited trials.
-- “Always Free” means free within the current offer's limits and conditions, not unlimited use.
-- AWS can change its offers. Confirm the service, region, usage dimensions and current limits on the [AWS Free Tier page](https://aws.amazon.com/free/) before each deployment.
-- Terraform cannot guarantee a zero bill. Other resources, traffic, logs, data transfer, account settings, and usage outside the offer may be billed.
-- Never commit credentials, account IDs that should be private, Terraform state, or `.tfvars` files containing secrets.
-- Do not run `terraform apply` or `terraform destroy` until you have reviewed the plan and understand the impact.
+<details>
+<summary><strong>Messaging and workflow</strong></summary>
+
+| Example | Learn | Keep in mind |
+| --- | --- | --- |
+| [SQS queue and DLQ](examples/sqs-queue-dlq/) | Configure a standard queue, dead-letter queue, and redrive policy. | Idle Lambda pollers can consume queue requests. |
+| [SNS fanout to SQS](examples/sns-fanout-sqs/) | Deliver topic messages to a queue and optionally email a subscriber. | Confirm email subscriptions; avoid SMS and customer-managed KMS keys. |
+| [EventBridge Scheduler](examples/eventbridge/) | Schedule a Lambda invocation with a least-privilege role. | Keep schedules sparse and bound runtime and log retention. |
+| [Step Functions Standard](examples/step-functions-hello/) | Build a short workflow from native states. | Standard transitions are shared; Express has no Always Free allowance. |
+| [Simple Workflow Service](examples/swf-domain/) | Create an SWF domain and register workflow types. | Domains cannot be deleted; destroy only deprecates them permanently. |
+
+</details>
+
+<details>
+<summary><strong>Identity, operations, and security</strong></summary>
+
+| Example | Learn | Keep in mind |
+| --- | --- | --- |
+| [Cognito user pool](examples/cognito-user-pool/) | Set up a Lite-tier user pool and public client. | Keep the tier explicit; SMS and custom domains may cost extra. |
+| [Systems Manager Parameter Store](examples/ssm-parameter-store/) | Store standard String and SecureString parameters. | SecureString values appear in Terraform state; customer-managed keys cost extra. |
+| [CloudTrail event history](examples/cloudtrail-event-history/) | Inspect the free 90-day management event history without a trail. | A trail adds S3 storage and request costs. |
+| [CloudWatch logs and alarm](examples/cloudwatch-logs-alarm/) | Turn matching log lines into a metric and alarm on it. | Metrics, alarms, dashboards, ingestion, and retention share account limits. |
+| [X-Ray Lambda tracing](examples/xray-lambda-tracing/) | Enable active tracing on a small Lambda function. | Trace recording and retrieval have separate monthly limits. |
+
+</details>
+
+<details>
+<summary><strong>Networking, edge, and metrics</strong></summary>
+
+| Example | Learn | Keep in mind |
+| --- | --- | --- |
+| [CloudFront with a Lambda URL](examples/cloudfront-lambda-url/) | Protect a Lambda function URL with CloudFront origin access control. | Requests, data transfer, and function calls share account allowances. |
+| [Managed Prometheus](examples/managed-prometheus/) | Scrape and query Amazon Managed Service for Prometheus. | Ingestion, storage, and queries have separate limits; avoid paid compute dependencies. |
+
+</details>
+
+## Multi-service projects
+
+These projects combine services into complete learning paths. Each has an independent Terraform root and README. Review the shared account budget before deploying several together.
+
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <h3><a href="projects/uptime-monitor/">📡 Uptime monitor</a></h3>
+      <p>Scheduled URL checks, outage and recovery alerts, status history, and a dashboard.</p>
+      <p><sub>Watch: CloudWatch metrics and alarms are account-wide limits.</sub></p>
+    </td>
+    <td width="50%" valign="top">
+      <h3><a href="projects/account-cost-guardrail/">🛡️ Account cost guardrail</a></h3>
+      <p>Budget emails and an automatic lock on a dedicated sandbox role.</p>
+      <p><sub>Watch: keep the Terraform operator outside the role the brake can lock.</sub></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <h3><a href="projects/notes-api-auth/">🔐 Notes API with Cognito auth</a></h3>
+      <p>A per-user notes API that verifies Cognito tokens inside Lambda.</p>
+      <p><sub>Watch: public URLs receive traffic; verify JWTs before database access. Requires AWS provider 6.28+.</sub></p>
+    </td>
+    <td width="50%" valign="top">
+      <h3><a href="projects/order-saga/">📦 Order saga</a></h3>
+      <p>Order intake, stock reservation, mock payment, notifications, and compensation.</p>
+      <p><sub>Watch: Step Functions transitions are shared across examples and projects.</sub></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <h3><a href="projects/webhook-ingest-queue/">📨 Webhook ingestion queue</a></h3>
+      <p>Signed webhook intake, SQS buffering, idempotent processing, and a DLQ alert.</p>
+      <p><sub>Watch: the worker defaults off because idle polling uses SQS requests. Requires AWS provider 6.28+.</sub></p>
+    </td>
+    <td width="50%" valign="top">
+      <h3><a href="projects/ci-image-build/">🏗️ CI image build</a></h3>
+      <p>CodeBuild publishes a container image to ECR Public and emails on failure.</p>
+      <p><sub>Watch: build minutes are shared; only build repositories you control.</sub></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <h3><a href="projects/feature-flags-edge/">🌐 Feature flags at the edge</a></h3>
+      <p>CloudFront caches flags from a protected Lambda URL backed by DynamoDB.</p>
+      <p><sub>Watch: CloudFront Function invocations are the tightest request limit. Requires AWS provider 6.28+.</sub></p>
+    </td>
+    <td width="50%" valign="top">
+      <h3><a href="projects/daily-digest/">🌍 Daily earthquake digest</a></h3>
+      <p>A scheduled USGS summary stored in DynamoDB and emailed through SNS.</p>
+      <p><sub>Watch: the daily schedule protects shared Step Functions transitions.</sub></p>
+    </td>
+  </tr>
+</table>
+
+## Cost safety
+
+- This repository targets **Always Free offers only**. It does not count credits, trials, student benefits, or AWS Partner benefits as free.
+- “Always Free” means free within the current offer’s limits and conditions, not unlimited usage.
+- AWS can change offers. Check the [AWS Free Tier page](https://aws.amazon.com/free/) for the service, Region, account eligibility, and current limits before each deployment.
+- Terraform cannot guarantee a $0 bill. Traffic, logs, data transfer, account settings, and usage outside an offer can be billed.
+- Never commit credentials, private account IDs, Terraform state, or `.tfvars` files containing secrets.
+- Review the plan before applying. Never run `terraform apply` or `terraform destroy` without understanding the exact resources and impact.
 
 ## Use with a coding agent
 
-Copy this prompt and replace the example path:
+Clone the public repository first; the agent should work from the local checkout, not from manually downloaded files:
+
+```sh
+git clone https://github.com/ertodebana/2dollaraws.git
+cd 2dollaraws
+```
+
+Then copy this prompt and replace `examples/REPLACE_ME` with an example directory. For a multi-service project, use a path under `projects/`.
 
 ```text
-You are helping me learn AWS using this public repository. Work only on `examples/REPLACE_ME`.
+You are helping me learn AWS using https://github.com/ertodebana/2dollaraws.
+Work only on `examples/REPLACE_ME` (or the specific `projects/` directory I name).
+Use the checked-out repository; do not ask me to download files individually.
 
 Before changing anything:
-1. Read the example README and every Terraform file. Explain each resource, its purpose, and what can cost money.
-2. Check the current AWS Always Free offer and its region, account, monthly quota, and exclusions. Do not count credits, trials, student benefits, or AWS Partner benefits as free.
+1. Read the target README and every Terraform file. Explain each resource, its purpose, and what could cost money.
+2. Check the current AWS Always Free offer, Region, account eligibility, monthly quota, and exclusions. Do not count credits, trials, student benefits, or AWS Partner benefits as free.
 3. Inspect the Terraform plan and identify resources or settings that could exceed an allowance or create charges.
 
 Rules:
 - Never ask me to paste credentials, put secrets in files, or use root credentials for Terraform.
-- Do not run `terraform apply`, `terraform destroy`, or any command that changes AWS resources. Stop before those commands and ask me to review and explicitly approve the exact action.
-- Do not widen IAM permissions or add paid services without explaining why and getting my approval.
-- Prefer the smallest change, document it, and tell me how to validate and clean it up.
+- Do not run `terraform apply`, `terraform destroy`, or commands that change AWS resources. Stop before those commands and ask me to review the exact action.
+- Do not widen IAM permissions or add paid services without explaining why and getting approval.
+- Prefer the smallest change. Document how to validate the configuration and clean it up.
 ```
 
 ## Contributing
 
-See [HOWTO.md](HOWTO.md) for the safety workflow. Contributions should use a separate example directory, pin or constrain provider versions, state every AWS resource created, identify cost drivers, and include a tested destroy path. A free-tier claim must link to an official AWS offer and state its relevant limits and assumptions.
+See [HOWTO.md](HOWTO.md) for the account and safety workflow. Use a separate directory for each example or project, pin or constrain provider versions, list every AWS resource, identify cost drivers, and document cleanup. Link free-tier claims to official AWS sources and state the relevant limits and assumptions.
 
 ## License
 
