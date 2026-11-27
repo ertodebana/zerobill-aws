@@ -1,7 +1,7 @@
 <h1 align="center">AWS Free Services, Used Well</h1>
 
 <p align="center">
-  Learn AWS building blocks with small Terraform examples, then combine them into complete projects.
+  A practical reference for AWS Always Free patterns, Terraform examples, and cost-aware project help.
 </p>
 
 <p align="center">
@@ -174,32 +174,12 @@ These projects combine services into complete learning paths. Each has an indepe
 - Never commit credentials, private account IDs, Terraform state, or `.tfvars` files containing secrets.
 - Review the plan before applying. Never run `terraform apply` or `terraform destroy` without understanding the exact resources and impact.
 
-## Use with a coding agent
+## Get help with your current project
 
-Clone the public repository first; the agent should work from the local checkout, not from manually downloaded files:
-
-```sh
-git clone https://github.com/ertodebana/2dollaraws.git
-cd 2dollaraws
-```
-
-Then copy this prompt and replace `examples/REPLACE_ME` with an example directory. For a multi-service project, use a path under `projects/`.
+Use this prompt while working in your existing project. It points the agent to this repository as a reference.
 
 ```text
-You are helping me learn AWS using https://github.com/ertodebana/2dollaraws.
-Work only on `examples/REPLACE_ME` (or the specific `projects/` directory I name).
-Use the checked-out repository; do not ask me to download files individually.
-
-Before changing anything:
-1. Read the target README and every Terraform file. Explain each resource, its purpose, and what could cost money.
-2. Check the current AWS Always Free offer, Region, account eligibility, monthly quota, and exclusions. Do not count credits, trials, student benefits, or AWS Partner benefits as free.
-3. Inspect the Terraform plan and identify resources or settings that could exceed an allowance or create charges.
-
-Rules:
-- Never ask me to paste credentials, put secrets in files, or use root credentials for Terraform.
-- Do not run `terraform apply`, `terraform destroy`, or commands that change AWS resources. Stop before those commands and ask me to review the exact action.
-- Do not widen IAM permissions or add paid services without explaining why and getting approval.
-- Prefer the smallest change. Document how to validate the configuration and clean it up.
+Help me with the AWS project in my current repository. Use https://github.com/ertodebana/2dollaraws as a reference for Always Free services, Terraform patterns, cost limits, and cleanup guidance. Inspect my project and apply the relevant help to the task I give you.
 ```
 
 ## Contributing
