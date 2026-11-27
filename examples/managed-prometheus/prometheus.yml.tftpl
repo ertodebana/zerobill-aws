@@ -1,0 +1,19 @@
+global:
+  scrape_interval: 60s
+  evaluation_interval: 60s
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets: ["localhost:9090"]
+remote_write:
+  - url: ${remote_write_url}
+    sigv4:
+      region: ${region}
+    queue_config:
+      max_samples_per_send: 500
+    # This keep rule sends only 5 series, about 216k samples/month (free limit: 40M).
+    # Removing it sends every self-scraped series and can exceed the free 40M samples/month.
+    write_relabel_configs:
+      - source_labels: [__name__]
+        regex: "up|go_goroutines|process_resident_memory_bytes|prometheus_tsdb_head_series|scrape_samples_scraped"
+        action: keep

@@ -1,0 +1,2 @@
+FROM public.ecr.aws/docker/library/busybox:musl
+CMD ["echo", "hello from ECR Public"]
