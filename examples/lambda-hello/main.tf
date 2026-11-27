@@ -28,8 +28,8 @@ resource "aws_iam_role" "lambda" {
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
-      Action = "sts:AssumeRole"
-      Effect = "Allow"
+      Action    = "sts:AssumeRole"
+      Effect    = "Allow"
       Principal = { Service = "lambda.amazonaws.com" }
     }]
   })
@@ -47,8 +47,8 @@ resource "aws_iam_role_policy" "logs" {
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
-      Effect = "Allow"
-      Action = ["logs:CreateLogStream", "logs:PutLogEvents"]
+      Effect   = "Allow"
+      Action   = ["logs:CreateLogStream", "logs:PutLogEvents"]
       Resource = "${aws_cloudwatch_log_group.lambda.arn}:*"
     }]
   })
@@ -57,12 +57,12 @@ resource "aws_iam_role_policy" "logs" {
 resource "aws_lambda_function" "hello" {
   function_name    = var.function_name
   role             = aws_iam_role.lambda.arn
-  handler           = "hello.handler"
-  runtime           = "python3.12"
-  filename          = data.archive_file.function.output_path
-  source_code_hash  = data.archive_file.function.output_base64sha256
-  memory_size       = 128
-  timeout           = 3
-  publish           = false
-  depends_on        = [aws_iam_role_policy.logs, aws_cloudwatch_log_group.lambda]
+  handler          = "hello.handler"
+  runtime          = "python3.12"
+  filename         = data.archive_file.function.output_path
+  source_code_hash = data.archive_file.function.output_base64sha256
+  memory_size      = 128
+  timeout          = 3
+  publish          = false
+  depends_on       = [aws_iam_role_policy.logs, aws_cloudwatch_log_group.lambda]
 }

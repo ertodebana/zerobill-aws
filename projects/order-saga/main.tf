@@ -4,7 +4,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.0"
+      version = ">= 6.28.0, < 7.0"
     }
     archive = {
       source  = "hashicorp/archive"
@@ -312,11 +312,11 @@ resource "aws_lambda_permission" "url_invoke" {
 }
 
 resource "aws_lambda_permission" "url_function_invoke" {
-  count                  = var.function_url_auth_type == "NONE" ? 1 : 0
-  statement_id           = "AllowFunctionUrlFunctionInvoke"
-  action                 = "lambda:InvokeFunction"
-  function_name          = aws_lambda_function.place_order.function_name
-  principal              = "*"
+  count                    = var.function_url_auth_type == "NONE" ? 1 : 0
+  statement_id             = "AllowFunctionUrlFunctionInvoke"
+  action                   = "lambda:InvokeFunction"
+  function_name            = aws_lambda_function.place_order.function_name
+  principal                = "*"
   invoked_via_function_url = true
 }
 
@@ -369,20 +369,20 @@ resource "aws_sfn_state_machine" "saga" {
         Parameters = {
           TransactItems = [
             { Update = {
-              TableName = aws_dynamodb_table.inventory.name
-              Key       = { sku = { "S.$" = "$.sku" } }
-              UpdateExpression    = "SET #a = #a - :q"
-              ConditionExpression = "#a >= :q"
+              TableName                = aws_dynamodb_table.inventory.name
+              Key                      = { sku = { "S.$" = "$.sku" } }
+              UpdateExpression         = "SET #a = #a - :q"
+              ConditionExpression      = "#a >= :q"
               ExpressionAttributeNames = { "#a" = "available" }
               ExpressionAttributeValues = {
                 ":q" = { "N.$" = "$.qty" }
               }
             } },
             { Update = {
-              TableName = aws_dynamodb_table.orders.name
-              Key       = { orderId = { "S.$" = "$.orderId" } }
-              UpdateExpression    = "SET #stockState = :reserved"
-              ConditionExpression = "#stockState = :none"
+              TableName                = aws_dynamodb_table.orders.name
+              Key                      = { orderId = { "S.$" = "$.orderId" } }
+              UpdateExpression         = "SET #stockState = :reserved"
+              ConditionExpression      = "#stockState = :none"
               ExpressionAttributeNames = { "#stockState" = "stockState" }
               ExpressionAttributeValues = {
                 ":reserved" = { S = "RESERVED" }
@@ -395,32 +395,32 @@ resource "aws_sfn_state_machine" "saga" {
         Retry = [{
           ErrorEquals     = ["States.TaskFailed"]
           IntervalSeconds = 1
-          MaxAttempts      = 2
-          BackoffRate      = 2
+          MaxAttempts     = 2
+          BackoffRate     = 2
         }]
         Catch = [{ ErrorEquals = ["States.ALL"], ResultPath = "$.error", Next = "MarkCancelled" }]
         Next  = "ChargePayment"
       }
       ChargePayment = {
-        Type     = "Task"
-        Resource = "arn:aws:states:::lambda:invoke"
+        Type           = "Task"
+        Resource       = "arn:aws:states:::lambda:invoke"
         TimeoutSeconds = 10
         Parameters = {
           FunctionName = aws_lambda_function.payment.arn
           Payload = {
-            action = "charge"
-            "orderId.$" = "$.orderId"
+            action          = "charge"
+            "orderId.$"     = "$.orderId"
             "amountCents.$" = "$.amountCents"
-            "simulate.$" = "$.simulate"
+            "simulate.$"    = "$.simulate"
           }
         }
         ResultSelector = { "paymentId.$" = "$.Payload.paymentId" }
         ResultPath     = "$.payment"
         Retry = [{
-          ErrorEquals = ["Lambda.ServiceException", "Lambda.AWSLambdaException", "Lambda.SdkClientException", "Lambda.TooManyRequestsException"]
+          ErrorEquals     = ["Lambda.ServiceException", "Lambda.AWSLambdaException", "Lambda.SdkClientException", "Lambda.TooManyRequestsException"]
           IntervalSeconds = 1
-          MaxAttempts      = 2
-          BackoffRate      = 2
+          MaxAttempts     = 2
+          BackoffRate     = 2
         }]
         Catch = [
           { ErrorEquals = ["PaymentDeclined"], ResultPath = "$.error", Next = "ReleaseStock" },
@@ -432,10 +432,10 @@ resource "aws_sfn_state_machine" "saga" {
         Type     = "Task"
         Resource = "arn:aws:states:::dynamodb:updateItem"
         Parameters = {
-          TableName = aws_dynamodb_table.orders.name
-          Key       = { orderId = { "S.$" = "$.orderId" } }
-          UpdateExpression    = "SET #s = :confirmed, paymentId = :p"
-          ConditionExpression = "#s = :pending AND #simulate <> :fail"
+          TableName                = aws_dynamodb_table.orders.name
+          Key                      = { orderId = { "S.$" = "$.orderId" } }
+          UpdateExpression         = "SET #s = :confirmed, paymentId = :p"
+          ConditionExpression      = "#s = :pending AND #simulate <> :fail"
           ExpressionAttributeNames = { "#s" = "status", "#simulate" = "simulate" }
           ExpressionAttributeValues = {
             ":confirmed" = { S = "CONFIRMED" }
@@ -445,23 +445,23 @@ resource "aws_sfn_state_machine" "saga" {
           }
         }
         ResultPath = null
-        Catch = [{ ErrorEquals = ["States.ALL"], ResultPath = "$.error", Next = "RefundPayment" }]
-        Next  = "NotifyConfirmed"
+        Catch      = [{ ErrorEquals = ["States.ALL"], ResultPath = "$.error", Next = "RefundPayment" }]
+        Next       = "NotifyConfirmed"
       }
       NotifyConfirmed = {
         Type     = "Task"
         Resource = "arn:aws:states:::sns:publish"
         Parameters = {
-          TopicArn = aws_sns_topic.notifications.arn
+          TopicArn    = aws_sns_topic.notifications.arn
           "Message.$" = "States.Format('Order {} confirmed: {} x {}', $.orderId, $.qty, $.sku)"
           "Subject.$" = "States.Format('Order {} confirmed', $.orderId)"
         }
         ResultPath = null
         Retry = [{
-          ErrorEquals = ["States.TaskFailed"]
+          ErrorEquals     = ["States.TaskFailed"]
           IntervalSeconds = 1
-          MaxAttempts      = 2
-          BackoffRate      = 2
+          MaxAttempts     = 2
+          BackoffRate     = 2
         }]
         # No Catch: a failed notification must not undo a confirmed order.
         Next = "OrderConfirmed"
@@ -473,24 +473,24 @@ resource "aws_sfn_state_machine" "saga" {
         Cause = "This orderId already exists. Use a new id for another order."
       }
       RefundPayment = {
-        Type     = "Task"
-        Resource = "arn:aws:states:::lambda:invoke"
+        Type           = "Task"
+        Resource       = "arn:aws:states:::lambda:invoke"
         TimeoutSeconds = 10
         Parameters = {
           FunctionName = aws_lambda_function.payment.arn
           Payload = {
-            action = "refund"
-            "orderId.$" = "$.orderId"
+            action        = "refund"
+            "orderId.$"   = "$.orderId"
             "paymentId.$" = "$.payment.paymentId"
           }
         }
         ResultSelector = { "refundId.$" = "$.Payload.refundId" }
         ResultPath     = "$.refund"
         Retry = [{
-          ErrorEquals = ["Lambda.ServiceException", "Lambda.AWSLambdaException", "Lambda.SdkClientException", "Lambda.TooManyRequestsException"]
+          ErrorEquals     = ["Lambda.ServiceException", "Lambda.AWSLambdaException", "Lambda.SdkClientException", "Lambda.TooManyRequestsException"]
           IntervalSeconds = 1
-          MaxAttempts      = 2
-          BackoffRate      = 2
+          MaxAttempts     = 2
+          BackoffRate     = 2
         }]
         # No Catch: if refunding fails, the execution must surface that failure.
         Next = "ReleaseStock"
@@ -501,17 +501,17 @@ resource "aws_sfn_state_machine" "saga" {
         Parameters = {
           TransactItems = [
             { Update = {
-              TableName = aws_dynamodb_table.inventory.name
-              Key       = { sku = { "S.$" = "$.sku" } }
-              UpdateExpression = "SET #a = #a + :q"
-              ExpressionAttributeNames = { "#a" = "available" }
+              TableName                 = aws_dynamodb_table.inventory.name
+              Key                       = { sku = { "S.$" = "$.sku" } }
+              UpdateExpression          = "SET #a = #a + :q"
+              ExpressionAttributeNames  = { "#a" = "available" }
               ExpressionAttributeValues = { ":q" = { "N.$" = "$.qty" } }
             } },
             { Update = {
-              TableName = aws_dynamodb_table.orders.name
-              Key       = { orderId = { "S.$" = "$.orderId" } }
-              UpdateExpression    = "SET #stockState = :released"
-              ConditionExpression = "#stockState = :reserved"
+              TableName                = aws_dynamodb_table.orders.name
+              Key                      = { orderId = { "S.$" = "$.orderId" } }
+              UpdateExpression         = "SET #stockState = :released"
+              ConditionExpression      = "#stockState = :reserved"
               ExpressionAttributeNames = { "#stockState" = "stockState" }
               ExpressionAttributeValues = {
                 ":released" = { S = "RELEASED" }
@@ -522,10 +522,10 @@ resource "aws_sfn_state_machine" "saga" {
         }
         ResultPath = null
         Retry = [{
-          ErrorEquals = ["States.TaskFailed"]
+          ErrorEquals     = ["States.TaskFailed"]
           IntervalSeconds = 1
-          MaxAttempts      = 2
-          BackoffRate      = 2
+          MaxAttempts     = 2
+          BackoffRate     = 2
         }]
         # No Catch: a failed compensation must surface in the execution history.
         # ponytail: a retry after a lost-but-successful response trips the stockState guard and fails the execution with data correct; add a Choice on CancellationReasons if that matters.
@@ -535,10 +535,10 @@ resource "aws_sfn_state_machine" "saga" {
         Type     = "Task"
         Resource = "arn:aws:states:::dynamodb:updateItem"
         Parameters = {
-          TableName = aws_dynamodb_table.orders.name
-          Key       = { orderId = { "S.$" = "$.orderId" } }
-          UpdateExpression    = "SET #s = :cancelled, #r = :reason"
-          ConditionExpression = "#s = :pending"
+          TableName                = aws_dynamodb_table.orders.name
+          Key                      = { orderId = { "S.$" = "$.orderId" } }
+          UpdateExpression         = "SET #s = :cancelled, #r = :reason"
+          ConditionExpression      = "#s = :pending"
           ExpressionAttributeNames = { "#s" = "status", "#r" = "reason" }
           ExpressionAttributeValues = {
             ":cancelled" = { S = "CANCELLED" }
@@ -553,16 +553,16 @@ resource "aws_sfn_state_machine" "saga" {
         Type     = "Task"
         Resource = "arn:aws:states:::sns:publish"
         Parameters = {
-          TopicArn = aws_sns_topic.notifications.arn
+          TopicArn    = aws_sns_topic.notifications.arn
           "Message.$" = "States.Format('Order {} cancelled: {} x {}. Reason: {}', $.orderId, $.qty, $.sku, $.error.Error)"
           "Subject.$" = "States.Format('Order {} cancelled', $.orderId)"
         }
         ResultPath = null
         Retry = [{
-          ErrorEquals = ["States.TaskFailed"]
+          ErrorEquals     = ["States.TaskFailed"]
           IntervalSeconds = 1
-          MaxAttempts      = 2
-          BackoffRate      = 2
+          MaxAttempts     = 2
+          BackoffRate     = 2
         }]
         # No Catch: keep a notification error visible after compensation.
         Next = "OrderCancelled"

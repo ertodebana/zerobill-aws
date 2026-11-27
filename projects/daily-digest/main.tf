@@ -84,8 +84,8 @@ resource "aws_lambda_function" "summarize" {
 
   environment {
     variables = {
-      MIN_MAGNITUDE = tostring(var.min_magnitude)
-      TOP_N         = tostring(var.top_n)
+      MIN_MAGNITUDE  = tostring(var.min_magnitude)
+      TOP_N          = tostring(var.top_n)
       RETENTION_DAYS = tostring(var.retention_days)
     }
   }
@@ -164,8 +164,8 @@ resource "aws_iam_role_policy" "sfn" {
         Resource = aws_lambda_function.summarize.arn
       },
       {
-        Effect = "Allow"
-        Action = ["dynamodb:GetItem", "dynamodb:PutItem"]
+        Effect   = "Allow"
+        Action   = ["dynamodb:GetItem", "dynamodb:PutItem"]
         Resource = aws_dynamodb_table.days.arn
       },
       {
@@ -199,7 +199,7 @@ resource "aws_sfn_state_machine" "digest" {
         Resource = "arn:aws:states:::lambda:invoke"
         Parameters = {
           FunctionName = aws_lambda_function.summarize.arn
-          "Payload.$" = "$"
+          "Payload.$"  = "$"
         }
         ResultSelector = {
           "report_date.$" = "$.Payload.report_date"
@@ -209,7 +209,7 @@ resource "aws_sfn_state_machine" "digest" {
           "expires_at.$"  = "$.Payload.expires_at"
           "body.$"        = "$.Payload.body"
         }
-        ResultPath    = "$.summary"
+        ResultPath     = "$.summary"
         TimeoutSeconds = 20
         Retry = [{
           ErrorEquals = [
@@ -281,7 +281,7 @@ resource "aws_sfn_state_machine" "digest" {
         Type     = "Task"
         Resource = "arn:aws:states:::sns:publish"
         Parameters = {
-          TopicArn   = aws_sns_topic.digest.arn
+          TopicArn    = aws_sns_topic.digest.arn
           "Message.$" = "$.summary.body"
           "Subject.$" = "States.Format('Quake digest {}: {} events (prev day {})', $.summary.report_date, $.summary.count, $.prev.Item.event_count.N)"
         }
@@ -292,7 +292,7 @@ resource "aws_sfn_state_machine" "digest" {
         Type     = "Task"
         Resource = "arn:aws:states:::sns:publish"
         Parameters = {
-          TopicArn   = aws_sns_topic.digest.arn
+          TopicArn    = aws_sns_topic.digest.arn
           "Message.$" = "$.summary.body"
           "Subject.$" = "States.Format('Quake digest {}: {} events (no previous day stored)', $.summary.report_date, $.summary.count)"
         }
@@ -303,8 +303,8 @@ resource "aws_sfn_state_machine" "digest" {
         Type     = "Task"
         Resource = "arn:aws:states:::sns:publish"
         Parameters = {
-          TopicArn = aws_sns_topic.digest.arn
-          Subject  = "Quake digest FAILED"
+          TopicArn    = aws_sns_topic.digest.arn
+          Subject     = "Quake digest FAILED"
           "Message.$" = "$.error.Cause"
         }
         ResultPath = null

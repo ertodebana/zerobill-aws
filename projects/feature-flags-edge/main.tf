@@ -3,7 +3,7 @@ terraform {
 
   required_providers {
     aws = {
-      source  = "hashicorp/aws"
+      source = "hashicorp/aws"
       # function_url_auth_type scopes Lambda function URL invocation to AWS_IAM.
       version = ">= 6.28.0, < 7.0"
     }
@@ -32,8 +32,8 @@ data "archive_file" "origin" {
 }
 
 resource "aws_dynamodb_table" "flags" {
-  name         = "${var.name_prefix}-flags"
-  billing_mode = "PROVISIONED"
+  name           = "${var.name_prefix}-flags"
+  billing_mode   = "PROVISIONED"
   read_capacity  = 1
   write_capacity = 1
   hash_key       = "app"
@@ -116,12 +116,12 @@ resource "aws_lambda_function" "origin" {
   role             = aws_iam_role.lambda.arn
   handler          = "origin.handler"
   runtime          = "python3.12"
-  architectures     = ["arm64"]
-  filename          = data.archive_file.origin.output_path
-  source_code_hash  = data.archive_file.origin.output_base64sha256
-  memory_size       = 128
-  timeout           = 3
-  publish           = false
+  architectures    = ["arm64"]
+  filename         = data.archive_file.origin.output_path
+  source_code_hash = data.archive_file.origin.output_base64sha256
+  memory_size      = 128
+  timeout          = 3
+  publish          = false
 
   environment {
     variables = {

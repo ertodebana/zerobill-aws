@@ -326,11 +326,11 @@ resource "aws_cloudwatch_dashboard" "this" {
         width  = 18
         height = 6
         properties = {
-          title   = "Empty receives = idle poller cost"
-          region  = var.aws_region
-          view    = "timeSeries"
-          stat    = "Sum"
-          period  = 300
+          title  = "Empty receives = idle poller cost"
+          region = var.aws_region
+          view   = "timeSeries"
+          stat   = "Sum"
+          period = 300
           metrics = [
             ["AWS/SQS", "NumberOfMessagesSent", "QueueName", aws_sqs_queue.main.name],
             ["AWS/SQS", "NumberOfMessagesReceived", "QueueName", aws_sqs_queue.main.name],
@@ -345,11 +345,11 @@ resource "aws_cloudwatch_dashboard" "this" {
         width  = 18
         height = 6
         properties = {
-          title   = "Visible messages: main queue and DLQ"
-          region  = var.aws_region
-          view    = "timeSeries"
-          stat    = "Maximum"
-          period  = 60
+          title  = "Visible messages: main queue and DLQ"
+          region = var.aws_region
+          view   = "timeSeries"
+          stat   = "Maximum"
+          period = 60
           metrics = [
             ["AWS/SQS", "ApproximateNumberOfMessagesVisible", "QueueName", aws_sqs_queue.main.name],
             ["AWS/SQS", "ApproximateNumberOfMessagesVisible", "QueueName", aws_sqs_queue.dlq.name]

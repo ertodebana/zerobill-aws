@@ -83,7 +83,7 @@ These allowances are shared with other examples and projects in the account. The
 
 ## Requirements and permissions
 
-Terraform 1.5+, AWS provider 5.x, AWS CLI v2, curl, and an AWS identity allowed to create/delete the listed resources. The caller of an `AWS_IAM` function URL needs both `lambda:InvokeFunctionUrl` and `lambda:InvokeFunction` permissions on this function. Run Terraform with a non-root identity and the intended account/profile.
+Terraform 1.5+, AWS provider >= 6.28.0, < 7.0 (needed for `invoked_via_function_url` on the public Function URL permission; see [provider issue](https://github.com/hashicorp/terraform-provider-aws/issues/44829)), AWS CLI v2, curl, and an AWS identity allowed to create/delete the listed resources. The caller of an `AWS_IAM` function URL needs both `lambda:InvokeFunctionUrl` and `lambda:InvokeFunction` permissions on this function. Run Terraform with a non-root identity and the intended account/profile.
 
 ## Use
 
